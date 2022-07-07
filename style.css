@@ -1,0 +1,166 @@
+:root {
+    --bg-dark: hsl(260, 35%, 7%);
+    --bg-card: hsl(260, 35%, 14%);
+    --bg-success-100: hsl(130, 45%, 45%);
+    --bg-success-200: hsl(130, 45%, 40%);
+    --bg-success-300: hsl(130, 45%, 20%);
+    --text-light: hsl(230, 30%, 63%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+main {
+    margin: 0 2em;
+}
+
+body {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5em;
+    padding: 1em 0;
+}
+
+h2 {
+    text-align: center;
+    font-size: 1.25em;
+    margin: 0.5em 0 1em;
+}
+
+.add-todo-container {
+    width: min(300px, 58vw);
+    background-color: var(--bg-card);
+    padding: 0.5em 1.25em 0.75em;
+    margin: 0 auto;
+}
+
+.add-todo-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-add {
+    width: 100%;
+    padding-block: 0.5em;
+    background-color: var(--bg-success-100);
+    border: none;
+    color: hsl(230, 70%, 10%);
+    cursor: pointer;
+    transition: background-color 200ms;
+}
+
+.btn-add:hover {
+    background-color: var(--bg-success-200);
+}
+
+.add-todo-form textarea,
+.add-todo-form input {
+    resize: none;
+    border: none;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    padding: 0.35em;
+    width: calc(100% - 0.7em);
+
+}
+
+
+.add-todo-form textarea:focus,
+.add-todo-form input:focus {
+    outline-style: solid;
+    outline-color: hsl(230, 24%, 25%);
+    outline-width: 2px;
+}
+
+.todo-list-container {
+    margin-top: 1.5em;
+    padding-bottom: 1em;
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 12px;
+}
+
+.todo-card {
+    background-color: var(--bg-card);
+}
+
+.todo-text {
+    padding: 1em;
+    word-break: break-all;
+}
+
+.todo-title {
+    padding: 0.5em 1em 0;
+}
+
+.todo-completed {
+    background-color: var(--bg-success-300);
+    color: hsl(0, 0%, 80%);
+}
+
+
+.todo-btn-group {
+    display: flex;
+    align-self: flex-start;
+    padding: 0.25em;
+    margin-left: auto;
+    justify-self: end;
+    gap: 4px;
+}
+
+.todo-btn {
+    padding: 0.2em;
+    width: 1.75em;
+    aspect-ratio: 1;
+    border: none;
+    cursor: pointer;
+    transition: background-color 200ms;
+}
+
+.row {
+    display: flex;
+}
+
+.btn-complete {
+    background-color: var(--bg-success-100);
+}
+
+.btn-complete:hover {
+    background-color: var(--bg-success-200);
+}
+
+.btn-edit {
+    background-color: hsl(230, 45%, 60%);
+}
+
+.btn-edit:hover {
+    background-color: hsl(230, 45%, 55%);
+}
+
+@media (min-width: 640px) {
+    .todo-list-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (min-width: 1200px) {
+    .todo-list-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
