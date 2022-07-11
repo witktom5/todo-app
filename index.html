@@ -1,44 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <script src="./index.js" defer></script>
     <title>Todo List App</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <main>
-        <header>
-            <h1>My Todo List</h1>
-        </header>
-        <section class="add-todo-container">
-            <h2>Add a new Todo</h2>
-            <form class="add-todo-form">
-                <input type="text" id="todo-title" required minlength="4" placeholder="Enter Todo title">
-                <textarea rows="4" required minlength="4" id="todo-text" placeholder="Enter Todo text"></textarea>
-                <button type="submit" class="btn-add">Create Todo</button>
-            </form>
-        </section>
-        <section class="todo-list-container">
-            <div class="todo-card">
-                <div class="row">
-                    <h3 class="todo-title">Aasd</h3>
-                    <div class="todo-btn-group">
-                        <button class="todo-btn btn-edit">✎</button>
-                        <button class="todo-btn btn-complete">✓</button>
-                    </div>
-                </div>
-                <div class="todo-text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut, veritatis blanditiis? Dolorem fuga
-                    deserunt voluptas
-                </div>
+      <header>
+        <h1>My Todo List</h1>
+      </header>
+      <section class="add-todo-container">
+        <h2>Add a new Todo</h2>
+        <form class="add-todo-form">
+          <input
+            type="text"
+            id="todo-form-title"
+            required
+            minlength="4"
+            placeholder="Enter Todo title"
+          />
+          <textarea
+            rows="4"
+            required
+            minlength="4"
+            id="todo-form-text"
+            placeholder="Enter Todo text"
+          ></textarea>
+          <button type="submit" class="btn-add">Create Todo</button>
+        </form>
+      </section>
+      <section class="todo-list-container">
+        <div class="todo-card">
+          <div class="row">
+            <h3 class="todo-title">Aasd</h3>
+            <div class="todo-btn-group">
+              <button class="todo-btn btn-edit">✎</button>
+              <button class="todo-btn btn-complete">✓</button>
             </div>
-        </section>
+          </div>
+          <div class="todo-text">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut,
+            veritatis blanditiis? Dolorem fuga deserunt voluptas
+          </div>
+        </div>
+      </section>
     </main>
-</body>
-
+  </body>
 </html>

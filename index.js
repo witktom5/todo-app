@@ -1,94 +1,96 @@
-function init() {
-    const form = document.querySelector('.add-todo-form')
-    const todoContainer = document.querySelector('.todo-list-container')
+const CLASS_NAMES = {
+  todoForm: "add-todo-form",
+  todoContainer: "todo-list-container",
+  todoText: "todo-text",
+  todoTitle: "todo-title",
+  todoCard: "todo-card",
+  todoCompleted: "todo-completed",
+  btnAdd: "btn-add",
+  btnComplete: "btn-complete",
+  btnEdit: "btn-edit",
+  btnTodo: "todo-btn",
+  btnTodoGroup: "todo-btn-group",
+};
 
-    form.addEventListener('submit', onAddTodo)
-    todoContainer.addEventListener('click', onTodoBtnClick)
-}
-
-//  Add a Todo
-
-function onAddTodo(e) {
-    e.preventDefault()
-    const formTextArea = document.querySelector('#todo-text')
-    const formInput = document.querySelector('#todo-title')
-
-    // save todo info, clear the inputs
-
-    const todoTitle = formInput.value;
-    const todoText = formTextArea.value;
-    formTextArea.value = ''
-    formInput.value = ''
-
-    //  save if in edit mode / add todo html
-    if (editedTodo) {
-        const formBtn = document.querySelector('.btn-add')
-
-        editedTodo.children[0].children[0].innerText = todoTitle;
-        editedTodo.children[1].innerText = todoText;
-        editedTodo = null;
-
-        formBtn.innerText = 'Create Todo'
-    } else {
-        const todoContainer = document.querySelector('.todo-list-container')
-
-        todoContainer.innerHTML +=
-            `
-            <div class="todo-card">
-             <div class="row">
-                <h3 class="todo-title">${todoTitle}</h3>
-                <div class="todo-btn-group">
-                  <button class="todo-btn btn-edit">✎</button>
-                  <button class="todo-btn btn-complete">✓</button>
-                </div>
-             </div>
-             <div class="todo-text">${todoText}</div>
-            </div>
-            `
-    }
-}
-
-// Todo buttons
-
-function onTodoBtnClick(e) {
-    const todoElement = e.target.closest('.todo-card')
-    if (e.target.classList.contains('btn-complete')) completeTodo(todoElement)
-    if (e.target.classList.contains('btn-edit')) editTodo(todoElement)
-}
-
-// Complete Todo
-
-function completeTodo(todo) {
-    todo.classList.toggle('todo-completed')
-}
-
-//  Edit Todo
-
-function editTodo(todo) {
-
-    const formBtn = document.querySelector('.btn-add')
-    const formTextArea = document.querySelector('#todo-text')
-    const formInput = document.querySelector('#todo-title')
-
-    // if already editing this todo, switch edit mode off
-    if (editedTodo && todo === editedTodo) {
-        editedTodo = null;
-        return formBtn.innerText = 'Create Todo'
-    }
-
-    editedTodo = todo
-
-    formBtn.innerText = 'Save Todo'
-
-    //  select title and text html elements, set edited elements
-
-    const todoText = todo.children[0].children[0].innerText
-    const todoTitle = todo.children[1].innerText
-
-    formTextArea.value = todoTitle;
-    formInput.value = todoText;
-}
+const form = document.querySelector(`.${CLASS_NAMES.todoForm}`);
+const formTextArea = document.querySelector("#todo-form-text");
+const formInput = document.querySelector("#todo-form-title");
+const formBtn = document.querySelector(`.${CLASS_NAMES.btnAdd}`);
+const todoContainer = document.querySelector(`.${CLASS_NAMES.todoContainer}`);
 
 let editedTodo = null;
 
-init()
+function init() {
+  form.addEventListener("submit", onAddTodo);
+  todoContainer.addEventListener("click", onTodoBtnClick);
+}
+
+//  On add todo button click
+function onAddTodo(e) {
+  e.preventDefault();
+
+  // save todo info, clear the inputs
+  const todoTitle = formInput.value;
+  const todoText = formTextArea.value;
+  formTextArea.value = "";
+  formInput.value = "";
+
+  //  save if in edit mode / add todo html
+  if (editedTodo) {
+    editedTodo.querySelector(`.${CLASS_NAMES.todoTitle}`).innerText = todoTitle;
+    editedTodo.querySelector(`.${CLASS_NAMES.todoText}`).innerText = todoText;
+    editedTodo = null;
+
+    formBtn.innerText = "Create Todo";
+  } else {
+    createTodo(todoTitle, todoText);
+  }
+}
+
+//  Create Todo
+function createTodo(todoTitle, todoText) {
+  todoContainer.innerHTML += `
+            <div class="${CLASS_NAMES.todoCard}">
+             <div class="row">
+                <h3 class="${CLASS_NAMES.todoTitle}">${todoTitle}</h3>
+                <div class="${CLASS_NAMES.btnTodoGroup}">
+                  <button class="${CLASS_NAMES.btnTodo} ${CLASS_NAMES.btnEdit}">✎</button>
+                  <button class="${CLASS_NAMES.btnTodo} ${CLASS_NAMES.btnComplete}">✓</button>
+                </div>
+             </div>
+             <div class="${CLASS_NAMES.todoText}">${todoText}</div>
+            </div>
+            `;
+}
+
+// Todo buttons
+function onTodoBtnClick(e) {
+  const todoElement = e.target.closest(`.${CLASS_NAMES.todoCard}`);
+  if (e.target.classList.contains(`${CLASS_NAMES.btnComplete}`))
+    completeTodo(todoElement);
+  if (e.target.classList.contains(`${CLASS_NAMES.btnEdit}`))
+    editTodo(todoElement);
+}
+
+// Complete Todo
+function completeTodo(todo) {
+  todo.classList.toggle(`${CLASS_NAMES.todoCompleted}`);
+}
+
+//  Edit Todo
+function editTodo(todo) {
+  // if already editing this todo, switch edit mode off
+  if (editedTodo && todo === editedTodo) {
+    editedTodo = null;
+    return (formBtn.innerText = "Create Todo");
+  }
+
+  editedTodo = todo;
+  formBtn.innerText = "Save Todo";
+
+  //  select title and text html elements, set edited elements
+  formInput.value = todo.querySelector(`.${CLASS_NAMES.todoTitle}`).innerText;
+  formTextArea.value = todo.querySelector(`.${CLASS_NAMES.todoText}`).innerText;
+}
+
+init();
