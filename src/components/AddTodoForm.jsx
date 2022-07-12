@@ -1,7 +1,7 @@
 import AddTodoInput from "./AddTodoInput";
 
 function AddTodoForm({
-  editedTodo,
+  todoToEdit,
   todoFormData,
   initialStateForm,
   setTodoFormData,
@@ -25,7 +25,7 @@ function AddTodoForm({
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (editedTodo) {
+    if (todoToEdit) {
       onEditTodo(todoFormData.todoTitle, todoFormData.todoText);
     } else {
       onAddTodo(todoFormData.todoTitle, todoFormData.todoText);
@@ -46,7 +46,7 @@ function AddTodoForm({
           />
         ))}
         <button type="submit" className="btn-add">
-          {editedTodo ? "Save Todo" : "Create Todo"}
+          {todoToEdit ? "Save Todo" : "Create Todo"}
         </button>
       </form>
     </section>

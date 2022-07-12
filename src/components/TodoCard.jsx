@@ -1,15 +1,16 @@
 function TodoCard({
   todo,
   onCompleteTodo,
-  editedTodo,
-  setEditedTodo,
+  onRemoveTodo,
+  todoToEdit,
+  setTodoToEdit,
   setTodoFormData,
 }) {
   const selectTodo = (todo) => {
-    if (todo.id === editedTodo) {
-      setEditedTodo(null);
+    if (todoToEdit && todo.id === todoToEdit.id) {
+      setTodoToEdit(null);
     } else {
-      setEditedTodo(todo.id);
+      setTodoToEdit(todo);
       setTodoFormData({ todoTitle: todo.title, todoText: todo.text });
     }
   };
@@ -30,6 +31,12 @@ function TodoCard({
             className="todo-btn btn-complete"
           >
             ✓
+          </button>
+          <button
+            onClick={() => onRemoveTodo(todo)}
+            className="todo-btn btn-remove"
+          >
+            X
           </button>
         </div>
       </div>

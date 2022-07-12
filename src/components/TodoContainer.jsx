@@ -3,9 +3,10 @@ import TodoCard from "./TodoCard";
 function TodoContainer({
   todos,
   onCompleteTodo,
-  editedTodo,
-  setEditedTodo,
+  todoToEdit,
+  setTodoToEdit,
   setTodoFormData,
+  onRemoveTodo,
 }) {
   return (
     <section className="todo-list-container">
@@ -14,10 +15,11 @@ function TodoContainer({
           <TodoCard
             key={i}
             todo={el}
-            editedTodo={editedTodo}
+            todoToEdit={todoToEdit}
             onCompleteTodo={onCompleteTodo}
-            setEditedTodo={setEditedTodo}
+            setTodoToEdit={setTodoToEdit}
             setTodoFormData={setTodoFormData}
+            onRemoveTodo={onRemoveTodo}
           />
         ))
       ) : (

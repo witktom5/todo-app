@@ -150,9 +150,28 @@ h2 {
   background-color: hsl(230, 45%, 55%);
 }
 
+.btn-remove {
+  background-color: hsl(5, 50%, 60%);
+}
+
+.btn-remove:hover {
+  background-color: hsl(5, 50%, 55%);
+}
+
 .no-todos-text {
   grid-column: span 3;
   text-align: center;
+}
+
+.error-message {
+  color: hsl(5, 75%, 45%);
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 1em;
 }
 
 @media (min-width: 640px) {
