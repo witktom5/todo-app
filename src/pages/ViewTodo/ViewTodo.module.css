@@ -1,0 +1,25 @@
+.todo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.todo-container > div {
+  min-width: calc(min(300px, 58vw) + 2.5em);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.link-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5em;
+}
+
+.link {
+  text-align: center;
+  color: hsl(230, 20%, 70%);
+  text-decoration: none;
+}

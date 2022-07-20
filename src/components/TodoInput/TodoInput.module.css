@@ -1,0 +1,8 @@
+.form-input {
+  resize: none;
+  border: none;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  padding: 0.35em;
+  width: calc(100% - 0.7em);
+}

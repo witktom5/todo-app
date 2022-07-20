@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
+import Home from "./pages/Home/Home";
+import Todos from "./pages/Todos/Todos";
+import Navbar from "./layout/Navbar";
+import Header from "./components/Header/Header";
+
+import { TodoContextProvider } from "./context/todos";
+import ViewTodo from "./pages/ViewTodo/ViewTodo";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Navbar />
+      <main>
+        <Header />
+        <TodoContextProvider>
+          <Routes>
+            <Route index element={<Home />} />
+            <Route path="todos" element={<Todos />}>
+              <Route path=":todoId" element={<ViewTodo />} />
+            </Route>
+          </Routes>
+        </TodoContextProvider>
+      </main>
+    </Router>
   );
 }
 

@@ -1,0 +1,70 @@
+.todo-card {
+  background-color: var(--bg-card);
+  transition: background-color 200ms, color 200ms;
+  max-width: 60ch;
+}
+
+.todo-unselected:hover {
+  background-color: hsl(260, 50%, 20%);
+  cursor: pointer;
+}
+
+.todo-text {
+  padding: 1em;
+  word-break: break-all;
+}
+
+.todo-title {
+  padding: 0.5em 1em 0;
+}
+
+.todo-completed {
+  background-color: var(--bg-success-300);
+  color: hsl(0, 0%, 80%);
+}
+
+.todo-btn-group {
+  display: flex;
+  align-self: flex-start;
+  padding: 0.25em;
+  margin-left: auto;
+  justify-self: end;
+  gap: 4px;
+}
+
+.todo-btn {
+  padding: 0.2em;
+  width: 1.75em;
+  aspect-ratio: 1;
+  border: none;
+  cursor: pointer;
+  transition: background-color 200ms;
+}
+
+.row {
+  display: flex;
+}
+
+.btn-complete {
+  background-color: var(--bg-success-100);
+}
+
+.btn-complete:hover {
+  background-color: var(--bg-success-200);
+}
+
+.btn-edit {
+  background-color: hsl(230, 45%, 60%);
+}
+
+.btn-edit:hover {
+  background-color: hsl(230, 45%, 55%);
+}
+
+.btn-remove {
+  background-color: hsl(5, 50%, 60%);
+}
+
+.btn-remove:hover {
+  background-color: hsl(5, 50%, 55%);
+}

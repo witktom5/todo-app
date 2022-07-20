@@ -1,0 +1,27 @@
+.add-todo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.add-todo-container {
+  width: min(300px, 58vw);
+  background-color: var(--bg-card);
+  padding: 1em 1.25em;
+  margin: 1em auto;
+}
+
+.btn-add {
+  width: 100%;
+  padding-block: 0.5em;
+  background-color: var(--bg-success-100);
+  border: none;
+  color: hsl(230, 70%, 10%);
+  cursor: pointer;
+  transition: background-color 200ms;
+}
+
+.btn-add:hover {
+  background-color: var(--bg-success-200);
+}
