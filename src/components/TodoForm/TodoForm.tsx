@@ -11,18 +11,8 @@ import api from "../../shared/utils/api";
 import TodoI from "../../types/todo";
 
 function TodoForm() {
-  const {
-    editedTodo,
-    setEditedTodo,
-    title,
-    setTitle,
-    body,
-    setBody,
-    todos,
-    setTodos,
-    setIsLoading,
-    setErrorMsg,
-  } = useContext(TodoFormContext);
+  const { todoDispatch, todoState, setIsLoading, setErrorMsg } =
+    useContext(TodoFormContext);
 
   const params = useParams();
 
@@ -38,8 +28,7 @@ function TodoForm() {
   ];
 
   const clearFormData = () => {
-    setTitle("");
-    setBody("");
+    todoDispatch({ type: "set-todo-form", payload: { title: "", body: "" } });
   };
 
   // ADD TODO
@@ -47,15 +36,14 @@ function TodoForm() {
   const onSubmitAdd = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newTodo: TodoI = {
-      title,
-      body,
+      ...todoState.todoForm,
       isComplete: false,
       createDate: new Date(Date.now()),
     };
     try {
       setIsLoading(true);
       const res = await api.post("/todos", newTodo);
-      setTodos([...todos, res.data]);
+      todoDispatch({ type: "create-todo", payload: res.data });
       clearFormData();
     } catch (error) {
       if (error instanceof Error || error instanceof AxiosError) {
@@ -73,14 +61,15 @@ function TodoForm() {
     e.preventDefault();
     try {
       setIsLoading(true);
-      await api.put(`/todos/${editedTodo.id}`, {
-        ...editedTodo,
-        title,
-        body,
+      const res = await api.put(`/todos/${todoState.editedTodo.id}`, {
+        ...todoState.editedTodo,
+        ...todoState.todoForm,
       });
-      const allTodoRes = await api.get("/todos");
-      setTodos(allTodoRes.data);
-      setEditedTodo(null);
+      todoDispatch({
+        type: "update-todo",
+        payload: res.data,
+      });
+      todoDispatch({ type: "set-edited-todo", payload: null });
       clearFormData();
     } catch (error) {
       if (error instanceof Error || error instanceof AxiosError) {
@@ -93,11 +82,11 @@ function TodoForm() {
   };
 
   // don't show form until edit btn if it's an todos/:id route
-  return !params.todoId || editedTodo ? (
+  return !params.todoId || todoState.editedTodo ? (
     <section className={styles["add-todo-container"]}>
       <form
         className={styles["add-todo-form"]}
-        onSubmit={editedTodo ? onSubmitEdit : onSubmitAdd}
+        onSubmit={todoState.editedTodo ? onSubmitEdit : onSubmitAdd}
       >
         {config.map((el, i) => (
           <TodoInput
@@ -107,7 +96,7 @@ function TodoForm() {
           />
         ))}
         <button type="submit" className={styles["btn-add"]}>
-          {editedTodo ? "Save Todo" : "Create Todo"}
+          {todoState.editedTodo ? "Save Todo" : "Create Todo"}
         </button>
       </form>
     </section>

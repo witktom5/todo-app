@@ -8,15 +8,15 @@ import styles from "./ViewTodo.module.css";
 
 function ViewTodo() {
   const { todoId } = useParams();
-  const { todos } = useContext(TodosContext);
+  const { todoState } = useContext(TodosContext);
   const [todo, setTodo] = useState<TodoI | null>(null);
   // If no Todo data (for example on refresh page)
   useEffect(() => {
-    if (todos) {
-      setTodo(todos.find((el: TodoI) => el.id === todoId));
+    if (todoState.todos) {
+      setTodo(todoState.todos.find((el: TodoI) => el.id === todoId));
       window.scrollTo(0, 0); // scroll to the top of the page
     }
-  }, [todos, todoId]);
+  }, [todoState.todos, todoId]);
 
   return (
     <>

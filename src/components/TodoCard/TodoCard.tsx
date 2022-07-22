@@ -8,33 +8,26 @@ import styles from "./TodoCard.module.css";
 import { useNavigate } from "react-router-dom";
 
 import ConditionalLink from "../../shared/ConditionalLink";
-
 import api from "../../shared/utils/api";
 
 function TodoCard({ todo, isSelected }: TodoCardProps) {
   const navigate = useNavigate();
 
-  const {
-    editedTodo,
-    setEditedTodo,
-    setTitle,
-    setBody,
-    setTodos,
-    setIsLoading,
-    setErrorMsg,
-  } = useContext(TodosContext);
+  const { todoDispatch, todoState, setIsLoading, setErrorMsg } =
+    useContext(TodosContext);
 
   // ON EDIT TODO BTN
 
   const onEdit = () => {
-    if (editedTodo && editedTodo.id === todo.id) {
-      setEditedTodo(null);
-      setTitle(null);
-      setBody(null);
+    if (todoState.editedTodo && todoState.editedTodo.id === todo.id) {
+      todoDispatch({ type: "set-edited-todo", payload: null });
+      todoDispatch({ type: "set-todo-form", payload: { title: "", body: "" } });
     } else {
-      setEditedTodo(todo);
-      setTitle(todo.title);
-      setBody(todo.body);
+      todoDispatch({ type: "set-edited-todo", payload: todo });
+      todoDispatch({
+        type: "set-todo-form",
+        payload: { title: todo.title, body: todo.body },
+      });
     }
   };
 
@@ -48,7 +41,7 @@ function TodoCard({ todo, isSelected }: TodoCardProps) {
         isComplete: !todo.isComplete,
       });
       const res = await api.get("/todos");
-      setTodos(res.data);
+      todoDispatch({ type: "get-todos", payload: res.data });
       setIsLoading(false);
     } catch (error) {
       if (error instanceof Error || error instanceof AxiosError) {
@@ -65,8 +58,10 @@ function TodoCard({ todo, isSelected }: TodoCardProps) {
     try {
       setIsLoading(true);
       await api.delete(`/todos/${todo.id}`);
-      const res = await api.get("/todos");
-      setTodos(res.data);
+      // const res = await api.get("/todos");
+      // todoDispatch({ type: "get-todos", payload: res.data });
+      // To use reducer CRUD:
+      todoDispatch({ type: "delete-todo", payload: todo.id });
     } catch (error) {
       if (error instanceof Error || error instanceof AxiosError) {
         setErrorMsg(error.message);

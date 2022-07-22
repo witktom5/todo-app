@@ -5,12 +5,18 @@ import TodoFormContext from "../../context/todos";
 import styles from "./TodoInput.module.css";
 
 function TodoInput({ placeholder, propName }: TodoInputProps) {
-  const { title, setTitle, body, setBody } = useContext(TodoFormContext);
+  const { todoState, todoDispatch } = useContext(TodoFormContext);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     propName === "todoTitle"
-      ? setTitle(e.target.value)
-      : setBody(e.target.value);
+      ? todoDispatch({
+          type: "set-todo-form",
+          payload: { ...todoState.todoForm, title: e.target.value },
+        })
+      : todoDispatch({
+          type: "set-todo-form",
+          payload: { ...todoState.todoForm, body: e.target.value },
+        });
   };
   return (
     <input
@@ -18,7 +24,11 @@ function TodoInput({ placeholder, propName }: TodoInputProps) {
       type="text"
       placeholder={placeholder}
       onChange={onChange}
-      value={propName === "todoTitle" ? title : body}
+      value={
+        propName === "todoTitle"
+          ? todoState.todoForm.title
+          : todoState.todoForm.body
+      }
     ></input>
   );
 }

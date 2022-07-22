@@ -14,15 +14,21 @@ import TodoCard from "../../components/TodoCard/TodoCard";
 import Spinner from "../../layout/Spinner";
 
 function Todos() {
-  const { todos, setTodos, isLoading, setIsLoading, errorMsg, setErrorMsg } =
-    useContext(TodosContext);
+  const {
+    todoState,
+    todoDispatch,
+    isLoading,
+    setIsLoading,
+    errorMsg,
+    setErrorMsg,
+  } = useContext(TodosContext);
 
   useEffect(() => {
     const fetchTodos = async () => {
       setIsLoading(true);
       try {
         const res = await api.get("/todos");
-        setTodos(res.data);
+        todoDispatch({ type: "get-todos", payload: res.data });
       } catch (error) {
         if (error instanceof Error || error instanceof AxiosError) {
           setErrorMsg(error.message);
@@ -33,7 +39,7 @@ function Todos() {
       setIsLoading(false);
     };
     fetchTodos();
-  }, [setTodos, setErrorMsg, setIsLoading]);
+  }, [setErrorMsg, setIsLoading, todoDispatch]);
 
   return isLoading ? (
     <Spinner />
@@ -43,13 +49,14 @@ function Todos() {
       {errorMsg && <p className={styles["error-message"]}>{errorMsg}</p>}
       <TodoForm />
       <section className={styles["todo-list-container"]}>
-        {todos && todos.length > 0 ? (
-          todos.map((el: TodoI, i: number) => (
+        {todoState.todos && todoState.todos.length > 0 ? (
+          todoState.todos.map((el: TodoI, i: number) => (
             <TodoCard isSelected={false} key={i} todo={el} />
           ))
         ) : (
           <div className={styles["no-todos-text"]}>
-            {!todos && "There are no Todos yet! Please add your first Todo."}
+            {!todoState.todos &&
+              "There are no Todos yet! Please add your first Todo."}
           </div>
         )}
       </section>

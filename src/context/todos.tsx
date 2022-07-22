@@ -1,15 +1,14 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useReducer } from "react";
 
-import { TodosContextProps } from "../types/todoContext";
-import TodoI from "../types/todo";
+import { todoReducer } from "../store/todoReducer";
+import { InitialTodoState } from "../store/todoState";
+
+import { TodosContextProps } from "./types";
 
 const TodosContext: any = createContext(null);
 
 export const TodoContextProvider = ({ children }: TodosContextProps) => {
-  const [todos, setTodos] = useState<TodoI[] | null>(null);
-  const [title, setTitle] = useState<string | null>("");
-  const [body, setBody] = useState<string | null>("");
-  const [editedTodo, setEditedTodo] = useState<TodoI | null>(null);
+  const [todoState, todoDispatch] = useReducer(todoReducer, InitialTodoState);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -17,14 +16,8 @@ export const TodoContextProvider = ({ children }: TodosContextProps) => {
   return (
     <TodosContext.Provider
       value={{
-        title,
-        setTitle,
-        body,
-        setBody,
-        editedTodo,
-        setEditedTodo,
-        todos,
-        setTodos,
+        todoState,
+        todoDispatch,
         isLoading,
         setIsLoading,
         errorMsg,
