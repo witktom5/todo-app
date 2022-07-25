@@ -8,7 +8,7 @@ import styles from "./ViewTodo.module.css";
 
 function ViewTodo() {
   const { todoId } = useParams();
-  const { todoState } = useContext(TodosContext);
+  const { todoState, todoDispatch } = useContext(TodosContext);
   const [todo, setTodo] = useState<TodoI | null>(null);
   // If no Todo data (for example on refresh page)
   useEffect(() => {
@@ -16,7 +16,10 @@ function ViewTodo() {
       setTodo(todoState.todos.find((el: TodoI) => el.id === todoId));
       window.scrollTo(0, 0); // scroll to the top of the page
     }
-  }, [todoState.todos, todoId]);
+    if (todoState.editedTodo !== todo) {
+      todoDispatch({ type: "set-edited-todo", payload: null });
+    }
+  }, [todoState.todos, todoState.editedTodo, todoId, todo, todoDispatch]);
 
   return (
     <>
