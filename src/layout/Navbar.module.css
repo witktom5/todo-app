@@ -3,9 +3,11 @@
   position: sticky;
   top: 0;
   display: flex;
+  flex-wrap: wrap;
   gap: 1em;
   padding: 1em;
   background-color: hsla(260, 35%, 14%, 0.8);
+  align-items: center;
 }
 
 .nav-text {
@@ -24,4 +26,28 @@
 
 .nav-link-active {
   color: hsl(230, 40%, 80%);
+}
+
+.logout {
+  border: none;
+  background: none;
+  color: hsl(230, 60%, 75%);
+  font-weight: 900;
+  margin-left: auto;
+  margin-right: 1em;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.login {
+  margin-left: auto;
+  margin-right: 1em;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.user {
+  font-size: 0.8em;
+  opacity: 0.9;
 }

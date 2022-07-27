@@ -1,24 +1,22 @@
-import TodoI from "../types/todo";
-
 export interface State {
   todos: TodoI[];
   editedTodo: TodoI | null;
-  todoForm: TodoForm;
+  todoForm: TodoFormT;
 }
 
-type TodoForm = { title: string; body: string };
+export type UserI = {
+  name: string;
+  id: number | string;
+  role: string;
+};
 
-type deleteTodoAction = { type: "delete-todo"; payload: number | string };
-type createTodoAction = { type: "create-todo"; payload: TodoI };
-type updateTodoAction = { type: "update-todo"; payload: TodoI };
-type getTodosAction = { type: "get-todos"; payload: TodoI[] };
-type setEditedTodoAction = { type: "set-edited-todo"; payload: TodoI | null };
-type setTodoFormAction = { type: "set-todo-form"; payload: TodoForm };
+export interface TodoI {
+  title: string;
+  body: string;
+  isComplete: boolean;
+  createDate: Date;
+  completeDate?: Date;
+  id?: string | number;
+}
 
-export type TodoAction =
-  | deleteTodoAction
-  | createTodoAction
-  | updateTodoAction
-  | getTodosAction
-  | setEditedTodoAction
-  | setTodoFormAction;
+type TodoFormT = { title: string; body: string };

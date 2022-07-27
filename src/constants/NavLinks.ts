@@ -1,6 +1,6 @@
-import navLinkI from "../types/navLink";
+import NavLinkI from "../types/navLink";
 
-export const navLinks: navLinkI[] = [
+export const navLinks: NavLinkI[] = [
   { title: "Home", link: "/" },
   { title: "Todos", link: "/todos" },
 ];

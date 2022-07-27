@@ -1,12 +1,10 @@
-import { useEffect, useContext } from "react";
-import TodosContext from "../../context/todos";
+import { useEffect } from "react";
+import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
+import { fetchTodos } from "../../store/asyncActions/todos";
+import { TodoI } from "../../store/types";
 
-import TodoI from "../../types/todo";
-import { AxiosError } from "axios";
+import { Outlet, useNavigate } from "react-router-dom";
 
-import { Outlet } from "react-router-dom";
-
-import api from "../../shared/utils/api";
 import styles from "./Todos.module.css";
 
 import TodoForm from "../../components/TodoForm/TodoForm";
@@ -14,39 +12,23 @@ import TodoCard from "../../components/TodoCard/TodoCard";
 import Spinner from "../../layout/Spinner";
 
 function Todos() {
-  const {
-    todoState,
-    todoDispatch,
-    isLoading,
-    setIsLoading,
-    errorMsg,
-    setErrorMsg,
-  } = useContext(TodosContext);
+  const dispatch = useAppDispatch();
+  const todoState = useAppSelector((state) => state.todoReducer);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchTodos = async () => {
-      setIsLoading(true);
-      try {
-        const res = await api.get("/todos");
-        todoDispatch({ type: "get-todos", payload: res.data });
-      } catch (error) {
-        if (error instanceof Error || error instanceof AxiosError) {
-          setErrorMsg(error.message);
-        } else {
-          setErrorMsg("Something went wrong...");
-        }
-      }
-      setIsLoading(false);
-    };
-    fetchTodos();
-  }, [setErrorMsg, setIsLoading, todoDispatch]);
+    if (!localStorage.getItem("token")) navigate("/login");
+    dispatch(fetchTodos());
+  }, [navigate, dispatch]);
 
-  return isLoading ? (
+  return todoState.isLoading ? (
     <Spinner />
   ) : (
     <>
       <Outlet></Outlet>
-      {errorMsg && <p className={styles["error-message"]}>{errorMsg}</p>}
+      {todoState.error && (
+        <p className={styles["error-message"]}>{todoState.error}</p>
+      )}
       <TodoForm />
       <section className={styles["todo-list-container"]}>
         {todoState.todos && todoState.todos.length > 0 ? (

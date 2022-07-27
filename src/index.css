@@ -38,3 +38,15 @@ h2 {
   font-size: 1.25em;
   margin: 0.5em 0 1em;
 }
+
+@media (max-width: 543.33px) {
+  h1 {
+    padding: 2em 0 1em;
+  }
+}
+
+@media (max-width: 296px) {
+  h1 {
+    padding: 2.5em 0 1em;
+  }
+}

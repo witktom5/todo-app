@@ -1,15 +1,19 @@
 import TodoCard from "../../components/TodoCard/TodoCard";
-import { useContext, useEffect, useState } from "react";
-import TodosContext from "../../context/todos";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import TodoI from "../../types/todo";
+import { TodoI } from "../../store/types";
+
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 
 import styles from "./ViewTodo.module.css";
+import { setEditedTodo } from "../../store/reducers/todoSlice";
 
 function ViewTodo() {
+  const dispatch = useAppDispatch();
+  const todoState = useAppSelector((state) => state.todoReducer);
   const { todoId } = useParams();
-  const { todoState, todoDispatch } = useContext(TodosContext);
-  const [todo, setTodo] = useState<TodoI | null>(null);
+  const [todo, setTodo] = useState<TodoI | null | undefined>(null);
+
   // If no Todo data (for example on refresh page)
   useEffect(() => {
     if (todoState.todos) {
@@ -17,9 +21,9 @@ function ViewTodo() {
       window.scrollTo(0, 0); // scroll to the top of the page
     }
     if (todoState.editedTodo !== todo) {
-      todoDispatch({ type: "set-edited-todo", payload: null });
+      dispatch(setEditedTodo(null));
     }
-  }, [todoState.todos, todoState.editedTodo, todoId, todo, todoDispatch]);
+  }, [todoState.todos, todoState.editedTodo, todoId, todo, dispatch]);
 
   return (
     <>

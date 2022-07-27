@@ -1,19 +1,16 @@
-import { useContext } from "react";
 import { useParams } from "react-router-dom";
+import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
+import { TodoI } from "../../store/types";
 
-import { AxiosError } from "axios";
+import { addTodo, updateTodo } from "../../store/asyncActions/todos";
+import { updateFormData } from "../../store/reducers/todoSlice";
 
 import TodoInput from "../TodoInput/TodoInput";
-import TodoFormContext from "../../context/todos";
 import styles from "./TodoForm.module.css";
 
-import api from "../../shared/utils/api";
-import TodoI from "../../types/todo";
-
 function TodoForm() {
-  const { todoDispatch, todoState, setIsLoading, setErrorMsg } =
-    useContext(TodoFormContext);
-
+  const dispatch = useAppDispatch();
+  const todoState = useAppSelector((state) => state.todoReducer);
   const params = useParams();
 
   const config = [
@@ -27,10 +24,6 @@ function TodoForm() {
     },
   ];
 
-  const clearFormData = () => {
-    todoDispatch({ type: "set-todo-form", payload: { title: "", body: "" } });
-  };
-
   // ADD TODO
 
   const onSubmitAdd = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,45 +33,21 @@ function TodoForm() {
       isComplete: false,
       createDate: new Date(Date.now()),
     };
-    try {
-      setIsLoading(true);
-      const res = await api.post("/todos", newTodo);
-      todoDispatch({ type: "create-todo", payload: res.data });
-      clearFormData();
-    } catch (error) {
-      if (error instanceof Error || error instanceof AxiosError) {
-        setErrorMsg(error.message);
-      } else {
-        setErrorMsg("Something went wrong...");
-      }
-    }
-    setIsLoading(false);
+    dispatch(addTodo(newTodo));
+    dispatch(updateFormData({ title: "", body: "" }));
   };
 
   //  EDIT TODO
 
   const onSubmitEdit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      setIsLoading(true);
-      const res = await api.put(`/todos/${todoState.editedTodo.id}`, {
-        ...todoState.editedTodo,
-        ...todoState.todoForm,
-      });
-      todoDispatch({
-        type: "update-todo",
-        payload: res.data,
-      });
-      todoDispatch({ type: "set-edited-todo", payload: null });
-      clearFormData();
-    } catch (error) {
-      if (error instanceof Error || error instanceof AxiosError) {
-        setErrorMsg(error.message);
-      } else {
-        setErrorMsg("Something went wrong...");
-      }
-    }
-    setIsLoading(false);
+    dispatch(
+      updateTodo({
+        ...todoState.editedTodo!,
+        title: todoState.todoForm.title,
+        body: todoState.todoForm.body,
+      })
+    );
   };
 
   // don't show form until edit btn if it's an todos/:id route

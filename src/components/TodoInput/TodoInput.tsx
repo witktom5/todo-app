@@ -1,22 +1,22 @@
 import { TodoInputProps } from "../../types/todoInput";
-import React, { useContext } from "react";
-import TodoFormContext from "../../context/todos";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+
+import { updateFormData } from "../../store/reducers/todoSlice";
 
 import styles from "./TodoInput.module.css";
 
 function TodoInput({ placeholder, propName }: TodoInputProps) {
-  const { todoState, todoDispatch } = useContext(TodoFormContext);
+  const dispatch = useAppDispatch();
+  const todoFormState = useAppSelector((state) => state.todoReducer.todoForm);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     propName === "todoTitle"
-      ? todoDispatch({
-          type: "set-todo-form",
-          payload: { ...todoState.todoForm, title: e.target.value },
-        })
-      : todoDispatch({
-          type: "set-todo-form",
-          payload: { ...todoState.todoForm, body: e.target.value },
-        });
+      ? dispatch(
+          updateFormData({ body: todoFormState.body, title: e.target.value })
+        )
+      : dispatch(
+          updateFormData({ title: todoFormState.title, body: e.target.value })
+        );
   };
   return (
     <input
@@ -25,9 +25,7 @@ function TodoInput({ placeholder, propName }: TodoInputProps) {
       placeholder={placeholder}
       onChange={onChange}
       value={
-        propName === "todoTitle"
-          ? todoState.todoForm.title
-          : todoState.todoForm.body
+        propName === "todoTitle" ? todoFormState.title : todoFormState.body
       }
     ></input>
   );
