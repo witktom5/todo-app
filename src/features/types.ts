@@ -19,4 +19,15 @@ export interface TodoI {
   id?: string | number;
 }
 
-type TodoFormT = { title: string; body: string };
+export interface AuthStateI {
+  currentUser: UserI | null;
+  isLoading: boolean;
+  error: string;
+}
+
+export type TodoFormT = { title: string; body: string };
+
+export interface TodoStateI {
+  editedTodo: TodoI | null;
+  todoForm: TodoFormT;
+}

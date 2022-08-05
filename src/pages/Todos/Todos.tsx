@@ -1,44 +1,39 @@
-import { useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../../hooks/reduxHooks";
-import { fetchTodos } from "../../store/asyncActions/todos";
-import { TodoI } from "../../store/types";
+import { useEffect } from 'react';
+import { TodoI } from '../../features/types';
 
-import { Outlet, useNavigate } from "react-router-dom";
+import { useFetchAllTodosQuery } from '../../services/todos';
 
-import styles from "./Todos.module.css";
+import { Outlet, useNavigate } from 'react-router-dom';
 
-import TodoForm from "../../components/TodoForm/TodoForm";
-import TodoCard from "../../components/TodoCard/TodoCard";
-import Spinner from "../../layout/Spinner";
+import styles from './Todos.module.css';
+
+import TodoForm from '../../components/TodoForm/TodoForm';
+import TodoCard from '../../components/TodoCard/TodoCard';
+import Spinner from '../../layout/Spinner';
 
 function Todos() {
-  const dispatch = useAppDispatch();
-  const todoState = useAppSelector((state) => state.todoReducer);
+  const { data, isLoading } = useFetchAllTodosQuery();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!localStorage.getItem("token")) navigate("/login");
-    dispatch(fetchTodos());
-  }, [navigate, dispatch]);
+    if (!localStorage.getItem('token')) navigate('/login');
+  }, [navigate]);
 
-  return todoState.isLoading ? (
+  return isLoading ? (
     <Spinner />
   ) : (
     <>
       <Outlet></Outlet>
-      {todoState.error && (
-        <p className={styles["error-message"]}>{todoState.error}</p>
-      )}
       <TodoForm />
-      <section className={styles["todo-list-container"]}>
-        {todoState.todos && todoState.todos.length > 0 ? (
-          todoState.todos.map((el: TodoI, i: number) => (
+      <section className={styles['todo-list-container']}>
+        {data && data.length ? (
+          data.map((el: TodoI, i: number) => (
             <TodoCard isSelected={false} key={i} todo={el} />
           ))
         ) : (
-          <div className={styles["no-todos-text"]}>
-            {!todoState.todos &&
-              "There are no Todos yet! Please add your first Todo."}
+          <div className={styles['no-todos-text']}>
+            {!data && 'There are no Todos yet! Please add your first Todo.'}
           </div>
         )}
       </section>

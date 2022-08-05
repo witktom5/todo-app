@@ -1,10 +1,10 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 
-import { navLinks } from "../constants/NavLinks";
-import styles from "./Navbar.module.css";
+import { navLinks } from '../constants/NavLinks';
+import styles from './Navbar.module.css';
 
-import { logoutUser } from "../store/reducers/authSlice";
+import { logoutUser } from '../features/auth/authSlice';
 
 function Navbar() {
   const dispatch = useAppDispatch();
@@ -14,20 +14,20 @@ function Navbar() {
 
   const onLogout = () => {
     dispatch(logoutUser());
-    navigate("/");
+    navigate('/');
   };
 
   return (
     <nav className={styles.navbar}>
-      <p className={styles["nav-text"]}>TODO List!</p>
+      <p className={styles['nav-text']}>TODO List!</p>
       {navLinks.map((e, i) => (
         <NavLink
           key={i}
           to={e.link}
           className={({ isActive }) =>
             isActive
-              ? `${styles["nav-link"]} ${styles["nav-link-active"]}`
-              : styles["nav-link"]
+              ? `${styles['nav-link']} ${styles['nav-link-active']}`
+              : styles['nav-link']
           }
         >
           {e.title}
@@ -37,10 +37,10 @@ function Navbar() {
         <NavLink
           className={({ isActive }) =>
             isActive
-              ? `${styles["nav-link"]} ${styles["nav-link-active"]} ${styles["login"]}`
-              : `${styles["nav-link"]} ${styles["login"]}`
+              ? `${styles['nav-link']} ${styles['nav-link-active']} ${styles['login']}`
+              : `${styles['nav-link']} ${styles['login']}`
           }
-          to={"/login"}
+          to={'/login'}
         >
           Login
         </NavLink>

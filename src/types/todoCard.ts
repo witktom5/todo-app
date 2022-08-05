@@ -1,4 +1,4 @@
-import { TodoI } from "../store/types";
+import { TodoI } from '../features/types';
 export type TodoCardProps = {
   todo: TodoI;
   isSelected: boolean;

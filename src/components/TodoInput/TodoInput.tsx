@@ -1,16 +1,16 @@
-import { TodoInputProps } from "../../types/todoInput";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { TodoInputProps } from '../../types/todoInput';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 
-import { updateFormData } from "../../store/reducers/todoSlice";
+import { updateFormData } from '../../features/todos/todoSlice';
 
-import styles from "./TodoInput.module.css";
+import styles from './TodoInput.module.css';
 
 function TodoInput({ placeholder, propName }: TodoInputProps) {
   const dispatch = useAppDispatch();
   const todoFormState = useAppSelector((state) => state.todoReducer.todoForm);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    propName === "todoTitle"
+    propName === 'todoTitle'
       ? dispatch(
           updateFormData({ body: todoFormState.body, title: e.target.value })
         )
@@ -20,12 +20,12 @@ function TodoInput({ placeholder, propName }: TodoInputProps) {
   };
   return (
     <input
-      className={styles["form-input"]}
-      type="text"
+      className={styles['form-input']}
+      type='text'
       placeholder={placeholder}
       onChange={onChange}
       value={
-        propName === "todoTitle" ? todoFormState.title : todoFormState.body
+        propName === 'todoTitle' ? todoFormState.title : todoFormState.body
       }
     ></input>
   );

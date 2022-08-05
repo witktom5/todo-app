@@ -1,14 +1,22 @@
-import { TodoCardProps } from "../../types/todoCard";
-import styles from "./TodoCard.module.css";
+import { TodoCardProps } from '../../types/todoCard';
+import styles from './TodoCard.module.css';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import ConditionalLink from "../../shared/ConditionalLink";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { updateFormData, setEditedTodo } from "../../store/reducers/todoSlice";
-import { updateTodo, deleteTodo } from "../../store/asyncActions/todos";
+import {
+  useUpdateTodoMutation,
+  useDeleteTodoMutation,
+} from '../../services/todos';
+
+import ConditionalLink from '../../shared/ConditionalLink';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { updateFormData, setEditedTodo } from '../../features/todos/todoSlice';
+import Spinner from '../../layout/Spinner';
 
 function TodoCard({ todo, isSelected }: TodoCardProps) {
+  const [updateTodo, updateTodoResult] = useUpdateTodoMutation();
+  const [deleteTodo, deleteTodoResult] = useDeleteTodoMutation();
+
   const dispatch = useAppDispatch();
   const todoState = useAppSelector((state) => state.todoReducer);
   const authState = useAppSelector((state) => state.authReducer);
@@ -19,7 +27,7 @@ function TodoCard({ todo, isSelected }: TodoCardProps) {
   const onEdit = () => {
     if (todoState.editedTodo && todoState.editedTodo.id === todo.id) {
       dispatch(setEditedTodo(null));
-      dispatch(updateFormData({ title: "", body: "" }));
+      dispatch(updateFormData({ title: '', body: '' }));
     } else {
       dispatch(setEditedTodo(todo));
       dispatch(updateFormData({ title: todo.title, body: todo.body }));
@@ -29,45 +37,47 @@ function TodoCard({ todo, isSelected }: TodoCardProps) {
   // ON COMPLETE TODO BTN
 
   const onComplete = async () => {
-    dispatch(updateTodo({ ...todo, isComplete: !todo.isComplete }));
+    updateTodo({ ...todo, isComplete: !todo.isComplete });
   };
 
   //  ON DELETE TODO BTN
 
   const onDelete = async () => {
-    if (authState.currentUser && authState.currentUser.role === "admin") {
-      dispatch(deleteTodo(todo));
-      navigate("/todos");
+    if (authState.currentUser && authState.currentUser.role === 'admin') {
+      deleteTodo(todo.id as number);
+      navigate('/todos');
     }
   };
 
-  return (
+  return deleteTodoResult.isLoading || updateTodoResult.isLoading ? (
+    <Spinner />
+  ) : (
     <ConditionalLink url={isSelected ? null : `/todos/${todo.id}`}>
       <div
-        className={`${styles["todo-card"]} ${
-          todo.isComplete ? styles["todo-completed"] : ""
-        } ${isSelected ? "" : styles["todo-unselected"]}`}
+        className={`${styles['todo-card']} ${
+          todo.isComplete ? styles['todo-completed'] : ''
+        } ${isSelected ? '' : styles['todo-unselected']}`}
       >
         <div className={styles.row}>
-          <h3 className={styles["todo-title"]}>{todo.title}</h3>
+          <h3 className={styles['todo-title']}>{todo.title}</h3>
           {isSelected && (
-            <div className={styles["todo-btn-group"]}>
+            <div className={styles['todo-btn-group']}>
               <button
                 onClick={onEdit}
-                className={`${styles["todo-btn"]} ${styles["btn-edit"]}`}
+                className={`${styles['todo-btn']} ${styles['btn-edit']}`}
               >
                 ✎
               </button>
               <button
                 onClick={onComplete}
-                className={`${styles["todo-btn"]} ${styles["btn-complete"]}`}
+                className={`${styles['todo-btn']} ${styles['btn-complete']}`}
               >
                 ✓
               </button>
-              {authState.currentUser && authState.currentUser.role === "admin" && (
+              {authState.currentUser && authState.currentUser.role === 'admin' && (
                 <button
                   onClick={onDelete}
-                  className={`${styles["todo-btn"]} ${styles["btn-remove"]}`}
+                  className={`${styles['todo-btn']} ${styles['btn-remove']}`}
                 >
                   X
                 </button>
@@ -75,7 +85,7 @@ function TodoCard({ todo, isSelected }: TodoCardProps) {
             </div>
           )}
         </div>
-        <div className={styles["todo-text"]}>{todo.body}</div>
+        <div className={styles['todo-text']}>{todo.body}</div>
       </div>
     </ConditionalLink>
   );

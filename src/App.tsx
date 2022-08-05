@@ -1,20 +1,23 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { useAppDispatch, useAppSelector } from "./hooks/reduxHooks";
-import { loginUser } from "./store/asyncActions/auth";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-import { users } from "./usersDB";
+import { useAppDispatch, useAppSelector } from './hooks/reduxHooks';
+import { loginUser } from './features/auth/authAsyncActions';
 
-import Home from "./pages/Home/Home";
-import Todos from "./pages/Todos/Todos";
-import Login from "./pages/Login/Login";
-import Navbar from "./layout/Navbar";
-import Header from "./components/Header/Header";
-import Spinner from "./layout/Spinner";
+import { users } from './usersDB';
 
-import ViewTodo from "./pages/ViewTodo/ViewTodo";
+import Home from './pages/Home/Home';
+import Todos from './pages/Todos/Todos';
+import Login from './pages/Login/Login';
+import Navbar from './layout/Navbar';
+import Header from './components/Header/Header';
+import Spinner from './layout/Spinner';
+
+import ViewTodo from './pages/ViewTodo/ViewTodo';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -23,7 +26,7 @@ function App() {
   // Auto login from token
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
     if (token) {
       const user = users.find((el) => el.id === +token);
       if (user) dispatch(loginUser(user.name));
@@ -39,11 +42,12 @@ function App() {
         <Header />
         <Routes>
           <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="todos" element={<Todos />}>
-            <Route path=":todoId" element={<ViewTodo />} />
+          <Route path='login' element={<Login />} />
+          <Route path='todos' element={<Todos />}>
+            <Route path=':todoId' element={<ViewTodo />} />
           </Route>
         </Routes>
+        <ToastContainer />
       </main>
     </>
   );

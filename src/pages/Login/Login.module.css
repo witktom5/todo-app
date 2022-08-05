@@ -33,9 +33,3 @@
 .btn:hover {
   background-color: var(--bg-success-200);
 }
-
-.error {
-  text-align: center;
-  margin-bottom: 1em;
-  color: red;
-}
